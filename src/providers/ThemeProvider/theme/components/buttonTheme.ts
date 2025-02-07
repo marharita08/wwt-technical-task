@@ -392,6 +392,12 @@ const sizes = {
 		px: '2rem', // 32px
 		borderWidth: '0.125rem'
 	}),
+	xlg: defineStyle({
+		fontSize: 'md',
+		h: '4rem', // 64px
+		px: '4.4rem', // 70.4px
+		borderWidth: '0.125rem'
+	}),
 	icon: defineStyle({
 		w: '4rem', // 64px
 		h: '4rem' // 64px
