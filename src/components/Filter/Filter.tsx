@@ -20,7 +20,7 @@ import { SearchRequestFilter } from '@api/types/SearchRequest'
 
 import { FilterConfirmation } from '@components/FilterConfirmation'
 import { FilterSection } from '@components/FilterSection'
-import { useSearchRequestFilterStore } from '@store/searchRequestFilterStore'
+import { useSearchRequestFilterStore } from '@store'
 
 import { fetchFilterData } from './fetchFilterData'
 

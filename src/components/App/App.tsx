@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react'
 
 import { Filter } from '@components/Filter'
-import { useSearchRequestFilterStore } from '@store/searchRequestFilterStore'
+import { useSearchRequestFilterStore } from '@store'
 
 export const App = () => {
 	const searchRequestFilterStored = useSearchRequestFilterStore(
