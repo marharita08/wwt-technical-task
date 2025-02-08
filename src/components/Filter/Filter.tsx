@@ -81,6 +81,12 @@ export const Filter = () => {
 		[]
 	)
 
+	const handleClearFilters = useCallback(() => {
+		setSearchRequestFilter(prev => {
+			return [...prev].map(item => ({ ...item, optionsIds: [] }))
+		})
+	}, [])
+
 	return (
 		<>
 			<Button
@@ -136,6 +142,7 @@ export const Filter = () => {
 							colorScheme="primary"
 							position={'absolute'}
 							right={'0'}
+							onClick={handleClearFilters}
 						>
 							{t('clear')}
 						</Button>
