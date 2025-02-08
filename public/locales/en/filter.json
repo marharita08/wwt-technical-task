@@ -3,5 +3,8 @@
 	"header": "Filter",
 	"body": "body",
 	"apply": "Apply",
-	"clear": "Clear all parameters"
+	"clear": "Clear all parameters",
+	"confirm-header": "Do you want to apply new filter",
+	"confirm-apply": "Apply new filter",
+	"confirm-cancel": "Use old filter"
 }

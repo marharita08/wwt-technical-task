@@ -17,8 +17,9 @@ import {
 import { useQuery } from '@tanstack/react-query'
 
 import { FilterItem } from '@api/types/Filter'
-import { SearchRequestFilter } from '@api/types/SearchRequest/SearchRequestFilter'
+import { SearchRequestFilter } from '@api/types/SearchRequest'
 
+import { FilterConfirmation } from '@components/FilterConfirmation'
 import { FilterSection } from '@components/FilterSection'
 import { useSearchRequestFilterStore } from '@store/searchRequestFilterStore'
 import jsonData from '@temp/filterData.json'
@@ -44,6 +45,9 @@ export const Filter = () => {
 	const updateSearchRequestFilter = useSearchRequestFilterStore(
 		state => state.updateSearchRequestFilter
 	)
+	const searchRequestFilterStored = useSearchRequestFilterStore(
+		state => state.searchRequestFilter
+	)
 	const [searchRequestFilter, setSearchRequestFilter] =
 		useState<SearchRequestFilter>([])
 
@@ -61,36 +65,48 @@ export const Filter = () => {
 		}
 	}, [filterItems])
 
-	const handleApply = () => {
-		updateSearchRequestFilter(searchRequestFilter)
-		onClose()
-	}
-
 	const handleFilterChange = useCallback(
 		(index: number, isChecked: boolean, optionId: string) => {
 			setSearchRequestFilter(prev => {
-				const updatedFilter = [...prev]
-				const updatedItem = { ...updatedFilter[index] }
-				updatedItem.optionsIds = isChecked
-					? [...updatedItem.optionsIds, optionId]
-					: updatedItem.optionsIds.filter(id => id !== optionId)
-				updatedFilter[index] = updatedItem
+				const updatedFilter = prev.map((item, idx) =>
+					idx === index
+						? {
+								...item,
+								optionsIds: isChecked
+									? [...item.optionsIds, optionId]
+									: item.optionsIds.filter(id => id !== optionId)
+							}
+						: item
+				)
 				return updatedFilter
 			})
 		},
-		[]
+		[setSearchRequestFilter]
 	)
 
 	const handleClearFilters = useCallback(() => {
+		setSearchRequestFilter(prev =>
+			[...prev].map(item => ({ ...item, optionsIds: [] }))
+		)
+	}, [setSearchRequestFilter])
+
+	const handleConfirm = useCallback(() => {
 		setSearchRequestFilter(prev => {
-			return [...prev].map(item => ({ ...item, optionsIds: [] }))
+			updateSearchRequestFilter(prev)
+			return prev
 		})
+		onClose()
 	}, [])
+
+	const handleOpen = useCallback(() => {
+		setSearchRequestFilter(searchRequestFilterStored)
+		onOpen()
+	}, [setSearchRequestFilter, searchRequestFilterStored])
 
 	return (
 		<>
 			<Button
-				onClick={onOpen}
+				onClick={handleOpen}
 				colorScheme="brand"
 				size={'xlg'}
 			>
@@ -103,9 +119,9 @@ export const Filter = () => {
 				size={'xl'}
 			>
 				<ModalOverlay />
-				<ModalContent>
+				<ModalContent py={'5'}>
 					<ModalHeader>{t('header')}</ModalHeader>
-					<ModalCloseButton />
+					<ModalCloseButton size={'lg'} />
 					<ModalBody>
 						<Stack gap={'4rem'}>
 							<Divider />
@@ -130,13 +146,11 @@ export const Filter = () => {
 						</Stack>
 					</ModalBody>
 					<ModalFooter>
-						<Button
-							onClick={handleApply}
-							colorScheme="brand"
-							size={'xlg'}
-						>
-							{t('apply')}
-						</Button>
+						<FilterConfirmation
+							onConfirm={handleConfirm}
+							onCancel={onClose}
+						/>
+
 						<Button
 							variant={'link'}
 							colorScheme="primary"
