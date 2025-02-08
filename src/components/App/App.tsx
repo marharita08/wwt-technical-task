@@ -13,6 +13,9 @@ export const App = () => {
 			maxW="90rem"
 			mx="auto"
 			minH="100dvh"
+			padding={'5'}
+			gap={'8'}
+			display={'flex'}
 		>
 			<Filter />
 			<div>{JSON.stringify(searchRequestFilterStored)}</div>

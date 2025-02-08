@@ -16,23 +16,13 @@ import {
 } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 
-import { FilterItem } from '@api/types/Filter'
 import { SearchRequestFilter } from '@api/types/SearchRequest'
 
 import { FilterConfirmation } from '@components/FilterConfirmation'
 import { FilterSection } from '@components/FilterSection'
 import { useSearchRequestFilterStore } from '@store/searchRequestFilterStore'
-import jsonData from '@temp/filterData.json'
 
-const fetchFilterData = async () => {
-	const data = jsonData
-
-	if (data && Array.isArray(data.filterItems)) {
-		return data.filterItems as FilterItem[]
-	}
-
-	return []
-}
+import { fetchFilterData } from './fetchFilterData'
 
 export const Filter = () => {
 	const { t } = useTranslation('filter')
